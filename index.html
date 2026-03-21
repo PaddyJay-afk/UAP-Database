@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Stack Dev Dashboard | For Everyone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --bg-card-hover: #222230;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-cyan: #06b6d4;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            --gradient-1: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            --gradient-2: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            --gradient-3: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            --gradient-4: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --border-color: rgba(255,255,255,0.08);
+            --shadow: 0 4px 24px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 48px rgba(0,0,0,0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.3), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(236, 72, 153, 0.2), transparent),
+                radial-gradient(ellipse 50% 30% at 20% 80%, rgba(6, 182, 212, 0.2), transparent);
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+            33% { opacity: 0.8; transform: scale(1.1) rotate(2deg); }
+            66% { opacity: 0.9; transform: scale(1.05) rotate(-1deg); }
+        }
+
+        .grid-pattern {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 70%);
+        }
+
+        .floating-shapes {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-purple);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-pink);
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .shape-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--accent-cyan);
+            bottom: 20%;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 30px) scale(1.02); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 100px;
+            font-size: 0.875rem;
+            color: var(--accent-purple);
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.1s forwards;
+            opacity: 0;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-hint {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 0.5rem;
+            animation: fadeInUp 0.8s ease 0.5s forwards;
+            opacity: 0;
+        }
+
+        .nav-hint button {
+            padding: 0.75rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-hint button:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-purple);
+        }
+
+        .dashboard {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category {
+            margin-bottom: 5rem;
+            scroll-margin-top: 2rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .category-icon.dev { background: var(--gradient-1); }
+        .category-icon.ui { background: var(--gradient-2); }
+        .category-icon.security { background: var(--gradient-3); }
+        .category-icon.ai { background: var(--gradient-4); }
+
+        .category-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .category-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.03) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .tool-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .tool-category-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.25rem;
+            display: inline-block;
+        }
+
+        .tool-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .tool-learn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-cyan);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: gap 0.2s ease;
+        }
+
+        .tool-card:hover .tool-learn {
+            gap: 0.75rem;
+        }
+
+        .no-cs-note {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .no-cs-note h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .no-cs-note p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 1rem;
+            }
+
+            .nav-hint {
+                top: 1rem;
+                right: 1rem;
+                flex-direction: column;
+            }
+
+            .nav-hint button {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .dashboard {
+                padding: 2rem 1rem;
+            }
+
+            .category-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tool-icon.docker { background: linear-gradient(135deg, #2496ed 0%, #0db7ed 100%); }
+        .tool-icon.kilo { background: linear-gradient(135deg, #6b21a8 0%, #a855f7 100%); }
+        .tool-icon.vscode { background: linear-gradient(135deg, #007acc 0%, #1f6feb 100%); }
+        .tool-icon.claude { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); }
+        .tool-icon.cursor { background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%); }
+        .tool-icon.codespaces { background: linear-gradient(135deg, #1f2937 0%, #374151 100%); }
+        .tool-icon.cowork { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+        .tool-icon.dispatch { background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%); }
+        .tool-icon.vercel { background: linear-gradient(135deg, #000 0%, #333 100%); }
+        .tool-icon.netlify { background: linear-gradient(135deg, #00c7b7 0%, #00a8a1 100%); }
+        .tool-icon.tailwind { background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%); }
+        .tool-icon.framer { background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%); }
+        .tool-icon.supabase { background: linear-gradient(135deg, #3ecf8e 0%, #22c55e 100%); }
+        .tool-icon.auth0 { background: linear-gradient(135deg, #eb5424 0%, #f97316 100%); }
+        .tool-icon.cloudflare { background: linear-gradient(135deg, #f38020 0%, #faae40 100%); }
+    </style>
+</head>
+<body>
+    <nav class="nav-hint">
+        <button onclick="document.getElementById('development').scrollIntoView({behavior:'smooth'})">Development</button>
+        <button onclick="document.getElementById('beautiful').scrollIntoView({behavior:'smooth'})">UI</button>
+        <button onclick="document.getElementById('security').scrollIntoView({behavior:'smooth'})">Security</button>
+        <button onclick="document.getElementById('ai').scrollIntoView({behavior:'smooth'})">AI</button>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="grid-pattern"></div>
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="badge">For Full Stack Developers</div>
+            <h1>Build Amazing Things<br><span class="gradient-text">Without the CS Degree</span></h1>
+            <p>A curated collection of the best tools for modern web development. No computer science background required—just passion and curiosity.</p>
+        </div>
+    </section>
+
+    <main class="dashboard">
+        <div class="no-cs-note">
+            <h3>No CS Degree? No Problem!</h3>
+            <p>These tools are designed to be accessible to everyone. Click "Learn More" on any tool to discover beginner-friendly resources.</p>
+        </div>
+
+        <section id="development" class="category">
+            <div class="category-header">
+                <div class="category-icon dev">⚡</div>
+                <div>
+                    <h2 class="category-title">Development Tools</h2>
+                    <p class="category-desc">Code, containerize, and deploy your applications</p>
+                </div>
+            </div>
+            <div class="tools-grid">
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon docker">🐳</div>
+                        <div>
+                            <div class="tool-name">Docker</div>
+                            <span class="tool-category-tag" style="background:rgba(37,150,237,0.2);color:#2496ed;">Container</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Package your app with everything it needs to run anywhere. Think of it as a shipping container for software—consistent environments from your machine to production.</p>
+                    <a href="https://docs.docker.com/get-started/" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon kilo">K</div>
+                        <div>
+                            <div class="tool-name">Kilo Code</div>
+                            <span class="tool-category-tag" style="background:rgba(168,85,247,0.2);color:#a855f7;">AI Coding</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">AI-powered coding assistant that helps you write, debug, and understand code. Works in your terminal—perfect for quick edits and learning new patterns.</p>
+                    <a href="https://kilo.ai/docs" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon vscode">📝</div>
+                        <div>
+                            <div class="tool-name">VS Code</div>
+                            <span class="tool-category-tag" style="background:rgba(0,122,204,0.2);color:#007acc;">Editor</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">The most popular code editor. Free, powerful, and works with almost every programming language. Extensions make it do almost anything.</p>
+                    <a href="https://code.visualstudio.com/docs" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon claude">🤖</div>
+                        <div>
+                            <div class="tool-name">Claude Code</div>
+                            <span class="tool-category-tag" style="background:rgba(245,158,11,0.2);color:#f59e0b;">AI Coding</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">An AI coding assistant from Anthropic that understands your codebase. Great for writing tests, explaining code, and handling complex refactoring.</p>
+                    <a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon cursor">⎚</div>
+                        <div>
+                            <div class="tool-name">Cursor</div>
+                            <span class="tool-category-tag" style="background:rgba(59,130,246,0.2);color:#3b82f6;">AI IDE</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">VS Code powered by AI. Write code faster with intelligent autocomplete, natural language commands, and AI-powered debugging.</p>
+                    <a href="https://cursor.sh/features" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon codespaces">☁️</div>
+                        <div>
+                            <div class="tool-name">GitHub Codespaces</div>
+                            <span class="tool-category-tag" style="background:rgba(107,114,128,0.2);color:#9ca3af;">Cloud IDE</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Code directly in your browser—no local setup needed. Perfect for quick prototyping or working on any computer.</p>
+                    <a href="https://docs.github.com/en/codespaces" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon cowork">👥</div>
+                        <div>
+                            <div class="tool-name">Cowork</div>
+                            <span class="tool-category-tag" style="background:rgba(16,185,129,0.2);color:#10b981;">Remote Dev</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Real-time collaborative development environment. Pair program with teammates as if you're sitting next to each other.</p>
+                    <a href="https://cowork.so/" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon dispatch">📨</div>
+                        <div>
+                            <div class="tool-name">Dispatch by Claude</div>
+                            <span class="tool-category-tag" style="background:rgba(124,58,237,0.2);color:#8b5cf6;">AI CLI</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">AI-powered command-line assistant. Describe what you want to do in plain English, and it generates the right commands for you.</p>
+                    <a href="https://dispatch.ai/" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+            </div>
+        </section>
+
+        <section id="beautiful" class="category">
+            <div class="category-header">
+                <div class="category-icon ui">🎨</div>
+                <div>
+                    <h2 class="category-title">Beautiful UIs</h2>
+                    <p class="category-desc">Design, style, and animate stunning interfaces</p>
+                </div>
+            </div>
+            <div class="tools-grid">
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon vercel">▲</div>
+                        <div>
+                            <div class="tool-name">Vercel</div>
+                            <span class="tool-category-tag" style="background:rgba(255,255,255,0.1);color:#fff;">Platform</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Deploy web apps with zero configuration. Made by the creators of Next.js. Perfect for React and modern frontend frameworks.</p>
+                    <a href="https://vercel.com/docs" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon netlify">N</div>
+                        <div>
+                            <div class="tool-name">Netlify</div>
+                            <span class="tool-category-tag" style="background:rgba(0,199,183,0.2);color:#00c7b7;">Platform</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">All-in-one platform for web projects. Drag-and-drop deploys, forms, edge functions, and instant SSL. Great for static sites.</p>
+                    <a href="https://docs.netlify.com/" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon tailwind">💨</div>
+                        <div>
+                            <div class="tool-name">Tailwind CSS</div>
+                            <span class="tool-category-tag" style="background:rgba(6,182,212,0.2);color:#06b6d4;">CSS Framework</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Style your sites faster with utility classes. No more fighting with CSS files—just compose beautiful designs directly in your HTML.</p>
+                    <a href="https://tailwindcss.com/docs" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon framer">⚛️</div>
+                        <div>
+                            <div class="tool-name">Framer Motion</div>
+                            <span class="tool-category-tag" style="background:rgba(236,72,153,0.2);color:#ec4899;">Animation</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Add smooth, production-ready animations to React apps. Declarative animations that are easy to learn and powerful enough for complex interactions.</p>
+                    <a href="https://www.framer.com/motion/" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+            </div>
+        </section>
+
+        <section id="security" class="category">
+            <div class="category-header">
+                <div class="category-icon security">🔐</div>
+                <div>
+                    <h2 class="category-title">Security</h2>
+                    <p class="category-desc">Authentication and protection for your apps</p>
+                </div>
+            </div>
+            <div class="tools-grid">
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon supabase">🔥</div>
+                        <div>
+                            <div class="tool-name">Supabase</div>
+                            <span class="tool-category-tag" style="background:rgba(34,197,94,0.2);color:#22c55e;">Backend</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Open-source Firebase alternative. Database, auth, storage, and serverless functions—all in one. SQL meets modern development.</p>
+                    <a href="https://supabase.com/docs" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon auth0">🔒</div>
+                        <div>
+                            <div class="tool-name">Auth0</div>
+                            <span class="tool-category-tag" style="background:rgba(249,115,22,0.2);color:#f97316;">Auth</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Add secure authentication to any app in minutes. Social logins, multi-factor auth, and enterprise SSO without the headache.</p>
+                    <a href="https://auth0.com/docs" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon cloudflare">☁️</div>
+                        <div>
+                            <div class="tool-name">Cloudflare</div>
+                            <span class="tool-category-tag" style="background:rgba(243,128,32,0.2);color:#f38020;">Security</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Protect your site from attacks and speed it up globally. CDN, DDoS protection, SSL, and edge computing—all in one.</p>
+                    <a href="https://developers.cloudflare.com/" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+            </div>
+        </section>
+
+        <section id="ai" class="category">
+            <div class="category-header">
+                <div class="category-icon ai">🧠</div>
+                <div>
+                    <h2 class="category-title">State of the Art AI</h2>
+                    <p class="category-desc">The latest AI-powered development tools</p>
+                </div>
+            </div>
+            <div class="tools-grid">
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon kilo">K</div>
+                        <div>
+                            <div class="tool-name">Kilo Code</div>
+                            <span class="tool-category-tag" style="background:rgba(168,85,247,0.2);color:#a855f7;">AI Dev</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Your AI coding partner in the terminal. Understands context, writes tests, explains code, and helps you learn as you build.</p>
+                    <a href="https://kilo.ai/docs" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon claude">🤖</div>
+                        <div>
+                            <div class="tool-name">Claude Code</div>
+                            <span class="tool-category-tag" style="background:rgba(245,158,11,0.2);color:#f59e0b;">AI Assistant</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Advanced AI that thinks through complex problems. Great for architectural decisions, debugging, and understanding unfamiliar codebases.</p>
+                    <a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon cursor">⎚</div>
+                        <div>
+                            <div class="tool-name">Cursor</div>
+                            <span class="tool-category-tag" style="background:rgba(59,130,246,0.2);color:#3b82f6;">AI IDE</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">The AI-first code editor. Edit code with chat, generate entire files from specs, and refactor with natural language.</p>
+                    <a href="https://cursor.sh/features" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+
+                <article class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon dispatch">📨</div>
+                        <div>
+                            <div class="tool-name">Dispatch by Claude</div>
+                            <span class="tool-category-tag" style="background:rgba(124,58,237,0.2);color:#8b5cf6;">AI CLI</span>
+                        </div>
+                    </div>
+                    <p class="tool-desc">Turn natural language into terminal commands. Learn Unix fundamentals while getting work done faster.</p>
+                    <a href="https://dispatch.ai/" target="_blank" class="tool-learn">Learn More →</a>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Built with 💜 for developers everywhere</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            observer.observe(card);
+        });
+
+        const cards = document.querySelectorAll('.tool-card');
+        cards.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.05}s`;
+        });
+
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroBg = document.querySelector('.hero-bg');
+            if (heroBg) {
+                heroBg.style.transform = `translateY(${scrolled * 0.3}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
